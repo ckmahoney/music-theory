@@ -87,7 +87,7 @@ export function Range(values, onInput) {
 }
 
 /** Display visual controls to control a synthesizer. */
-export function createGUI(synths) {
+export function GUI(synths) {
   const children = synths.map(ControlPanel);
   synths.forEach(s => {window[s.name] = s}); // for development
 
