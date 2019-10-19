@@ -5,14 +5,48 @@
   <style>
     body {
       font-family: 'Helvetica', 'Arial', sans-serif;
+      background: black;
+    }
+
+    .gui {
+      display: flex;
+      flex-flow: row wrap;
+    }
+
+    .control-panel {
+      max-width: 300px;
+      margin: 15px;
+    }
+
+    .control-panel h2 {
+      color: magenta;
+    }
+
+    .control-panel .panel h2 {
+      color: cadetblue;
+    }
+
+    .control-panel .panel label {
+      color: orange;
+    }
+
+    .control-container {
+      width: 100%;
+    }
+
+    .control-group {
+      width: 100%;
+      display: flex; 
+      flex-flow: row no-wrap;
+      justify-content: space-between;
     }
 
     .panel {
+      background: white;
       display: flex;
       flex-flow: row wrap;
       justify-content: space-between;
       align-items: center;
-      max-width: 300px;
       border: 1px solid black;
       padding: 10px 15px;
     }
