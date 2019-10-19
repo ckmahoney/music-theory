@@ -1,3 +1,4 @@
+import { assign } from '../ply.js';
 
 const presets = [
     { name: 'Synth',
@@ -58,4 +59,43 @@ export function createPart(synth, pitches) {
   synth.part = part;
   addPart(part);
   return part;
+}
+
+/** Display an input to dictate note performance. 
+    It updates the assigned part onInput. */
+function ManualInput() {
+  ManualInput.assign = function(part) {
+    ManualInput.part = part;
+    updateManualPitches();
+    ManualInput.part.update(ManualInput.pitches);
+  }
+
+  if (!ManualInput.ref) {
+    const input = document.createElement('input');
+    ManualInput.pitches = Notes.scales.major;
+    input.value = ManualInput.pitches.toString();
+    input.addEventListener('input', updateManualPitches);
+    input.addEventListener('input', updatePartPattern);
+    ManualInput.ref = input;
+    document.body.appendChild(input);
+  }
+
+  function updateManualPitches() {
+    ManualInput.pitches = ManualInput.ref.value.split(/,|\s+/)
+      .filter(n => !!n)
+      .map(n => parseInt(n));
+  }
+
+  function updatePartPattern() {
+    ManualInput.part.update(ManualInput.pitches);
+  }
+
+  return ManualInput.ref;
+}
+
+/** Add a playable part to the global scope. */
+function addPart(part, ...parts) {
+  window.parts.push(part);
+  if (parts.length)
+    parts.forEach(p => window.parts.push(p));
 }
