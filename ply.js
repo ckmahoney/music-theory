@@ -21,9 +21,6 @@ function start() {
 }
 
 function init() {
-  ManualInput();
-  console.log(ManualInput)
-  console.log(ManualInput.pitches)
   window.parts = [];
   const adsr = {
     a: 0.08,
@@ -57,7 +54,6 @@ function init() {
 
   // const leadPart = createPart(lead, ManualInput.pitches);
   const parts = Notes.diatonicHarmony(ManualInput.pitches);
-  console.log("generated parts", parts);
   const syns = parts.map((p, i) => {
     const syn = createSyn(i);
     const part = createPart(syn, p);
