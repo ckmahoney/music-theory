@@ -2,18 +2,23 @@
 import Tone from 'tone';
 import * as Notes from './src/Notes.js';
 import * as Components from './src/Components.js';
-function log(name, item) {
-  console.log(name, typeof item, item);
-}
-
-
-function addPart(part, ...parts) {
-  window.parts.push(part);
-  if (parts.length)
-    parts.forEach(p => window.parts.push(p));
-}
 
 init();
+
+function log(item, msg = '') {
+  console.log(msg, typeof item, item);
+}
+
+function start() {
+  if (Tone.Transport.state == 'started')
+    return Tone.Transport.pause();
+
+  Tone.Transport.bpm.value = 132;
+  Tone.start();
+  Tone.Transport.start();
+
+  window.parts.forEach((part) => part.start());
+}
 
 function init() {
   ManualInput();
@@ -50,15 +55,37 @@ function init() {
     kick.triggerAttackRelease(n, "8n", t);
   }, [["0:0", "G1"],["0:1", "G1"], ["0:2", "G1"], ["0:3", "G#1"], ["0:3:2", "G1"]]);
 
-  const leadPart = createPart(lead, ManualInput.pitches);
-  ManualInput.assign(leadPart);
+  // const leadPart = createPart(lead, ManualInput.pitches);
+  const parts = Notes.diatonicHarmony(ManualInput.pitches);
+  console.log("generated parts", parts);
+  const syns = parts.map((p, i) => {
+    const syn = createSyn();
+    console.log("created part with syn and parts", syn, p)
+    const part = createPart(syn, p);
+    assign(syn, {name: 'syn' + i, displayName: "Synth " + i});
+    return syn;
+  });
 
+  // ManualInput.assign(leadPart);
 
   assign(lead, {name: 'lead', displayName: 'Lead Synth'});
   assign(kick, {name: 'kick', displayName: 'Kick'});
 
-  const gui = createGUI([kick, lead]);
+  const gui = Components.GUI([kick, ...syns]);
   document.body.appendChild(gui);
+  document.querySelector("#play").addEventListener('click', start);
+}
+
+function createSyn() {
+  const synFilterFreq = 620;
+  const synFilter = new Tone.AutoFilter("1n", synFilterFreq, 2);
+  const syn = new Tone.Synth({
+    oscillator : {
+      type : "fatsquare"
+    }
+  });
+
+  return syn;
 }
 
 /** Create an abstract musical part (notes, rhythms) */
@@ -95,17 +122,6 @@ function createPart(synth, pitches) {
   return part;
 }
 
-function start() {
-  if (Tone.Transport.state == 'started')
-    return Tone.Transport.pause();
-
-  Tone.Transport.bpm.value = 132;
-  Tone.start();
-  Tone.Transport.start();
-
-  window.parts.forEach((part) => part.start());
-}
-
 /** Display an input to dictate note performance. 
     It updates the assigned part onInput. */
 function ManualInput() {
@@ -117,7 +133,7 @@ function ManualInput() {
 
   if (!ManualInput.ref) {
     const input = document.createElement('input');
-    ManualInput.pitches = Scales.major;
+    ManualInput.pitches = Notes.scales.major;
     input.value = ManualInput.pitches.toString();
     input.addEventListener('input', updateManualPitches);
     input.addEventListener('input', updatePartPattern);
@@ -139,9 +155,14 @@ function ManualInput() {
 }
 
 /** Modify object properties in place. */
-function assign(object, fields) {
+function assign(target, fields = {}) {
   for (let k in fields)
-    object[k] = fields[k];
+    target[k] = fields[k];
 }
 
-document.querySelector("#play").addEventListener('click', start);
+/** Add a playable part to the global scope. */
+function addPart(part, ...parts) {
+  window.parts.push(part);
+  if (parts.length)
+    parts.forEach(p => window.parts.push(p));
+}
