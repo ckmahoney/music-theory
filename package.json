@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "node_modules\\.bin\\webpack ply.js -o main.js --watch"
+    "dev": "node_modules\\.bin\\webpack ply.js -o main.js --watch --mode=development"
   },
   "author": "",
   "license": "ISC",
