@@ -1,4 +1,27 @@
 import Tone from 'tone';
+
+/** Display visual controls to control a synthesizer. */
+export function GUI(synths) {
+  const children = synths.map(ControlPanel);
+  synths.forEach(s => {window[s.name] = s}); // for development
+  
+  const gui = Panel(children);
+  gui.className = 'gui';
+  return gui;
+}
+
+/** Display a set of controls for a target Synthesizer. */
+export function ControlPanel(syn) {
+  syn.panels = [
+    VolumeFader(syn),
+    EQPanel(syn)
+  ];
+
+  const controls = Panel(syn.panels, syn.displayName);
+  controls.classList.add('control-panel');
+  return controls;
+}
+
 /** Create an EQ3 for `syn`, connect it, and display a panel. */
 export function EQPanel(syn) {
   const eq = new Tone.EQ3();
@@ -40,7 +63,9 @@ export function EQPanel(syn) {
   });
 
   syn.chain(eq, Tone.Master);
-  return Panel([...ranges, lowCutoffRange, highCutoffRange], syn.displayName + ' EQ');
+  const container = Panel([...ranges, lowCutoffRange, highCutoffRange], syn.displayName + ' EQ');
+  container.classList.add('control-container');
+  return container;
 }
 
 /** Display a panel of related controls. */
@@ -50,6 +75,7 @@ export function Panel(children, displayName = '') {
 
   if (displayName) {
     const label = document.createElement('h2');
+    label.classList.add('controls-label');
     label.textContent = displayName;
     panel.appendChild(label);
   }
@@ -83,41 +109,26 @@ export function Range(values, onInput) {
 
   group.appendChild(label);
   group.appendChild(input);
+  group.classList.add('control-group');
   return group;
-}
-
-/** Display visual controls to control a synthesizer. */
-export function GUI(synths) {
-  const children = synths.map(ControlPanel);
-  synths.forEach(s => {window[s.name] = s}); // for development
-
-  return Panel(children);
-}
-
-/** Display a set of controls for a target Synthesizer. */
-export function ControlPanel(syn) {
-  syn.panels = [
-    VolumeFader(syn),
-    EQPanel(syn)
-  ];
-
-  return Panel(syn.panels, syn.displayName);
 }
 
 /** Display a fader for the synthesizer's volume. */
 export function VolumeFader(syn) {
   const input = document.createElement('input');
+  console.log("Volume for syn " + syn.name + " is " + syn.volume.value)
   const volume = {
     name: syn.displayName + ' Volume',
-    min: -12,
-    max: 12,
-    value: 0,
+    min: -36,
+    max: 24,
+    value: syn.volume.value,
     step: 1
   }
 
   // Each synth already has a member #volume; use that rather than new Tone.Volume.
   function onChange(event) {
     syn.volume.value = event.target.value;
+    console.log("New volume for synth " + syn.name + " is " + event.target.value, syn.volume.value)
   }
 
   return Range(volume, onChange);
