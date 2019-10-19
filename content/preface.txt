@@ -1,0 +1,75 @@
+
+
+Creating new music can be challenging. How do you know what notes to pick? What's a chord? Where does a melod come from?
+
+There are as many answers to these questions as there are musicians in the world. Many of those answers are rooted in Western traditions of harmony. 
+
+Those traditions have had a strong influence on my own interpretations of sound theory and music composition. However, the world has shown us that there is much else to consider. 
+
+For example, we typically divide an octave into twelve equal tones. These notes form 12 distinct pitch classes that repeat for each octave. Often they are notated like this: 
+
+The Chromatic Scale
+C C# D D# E F G G# A A# B 
+
+But why do some letters get used twice and others only once? Isn't there also some thing called a "flat"? 
+
+
+Yes, a "flat" exists and is relative to your key. And some letters get used twice because this is how a *chromatic* scale is spelled in _English_. Other languages use different characters for the same note.
+
+Wouldn't it be easier if there were a common language without words to communicate the same idea? 
+
+Oh hai sheet music!
+
+[ chromatic scale sheet music ] 
+
+But wait, now the same notes are on the same line sometimes and other times no the same space. . .  this is still too ambiguous. 
+
+What if there were a more objective, unambiguous, declarative way to express what notes you want? 
+
+Here's the same chromatic scale. 
+
+The Chromatic Scale
+0 1 2 3 4 5 6 7 8 9 10 11
+
+. . . but those are just numbers.
+And letters are just letters. We are only accustomed to naming notes with letters. But a name is only a name, so why not use a number to name it instead? 
+
+The immediate benefit is clear: 
+Every note now has its own unique, totally independent identifier. It is impossible to confuse "D" and "D#" because now we can call it 2 and 3, and know that they are indeed their own independent selves.
+
+Let's agree on some terms. 
+
+A *Scale Degree* is one note within a specific scale. For example, the first scale degree of the above chromatic scale is 0. 
+
+The chromatic scale has 12 degrees. When speaking aloud, we'll refer to them by the name of the number. So the first degree is 0, the second degree is 1, the third degree is 2, and so on.
+
+Why do we start at 0 instead of 1? 
+It will make adding things together much easier later. Bear with me. 
+
+Western harmony has many, many incredible use cases. It establishes fantastic rules for composing and arranging music. My goal is to extend those rules, but make them more _modular_. 
+
+By using a numeric system to create music, we can much more easily identify patterns common across many pieces of music. 
+
+Consider this chord first progression for example:
+
+Progression Falala
+||: F - - - | C - - - | Bb - - - | F - C - :||
+
+and this second progression: 
+
+Progression Lalala
+||: G# - - - | D# - - - | C# - - - | G# - D# - :||
+
+Are they the same? 
+No. And yes. They are. . . very similar. 
+
+The only difference is which scale it starts on. Otherwise, the _relationships_ between all the chords are identical. Using Western notation, we can write _both_ progressions like this: 
+
+|| I - - - | V - - - | IV - - - | I - V - :||
+
+For centuries music analysists have been using Roman numerals to describe harmonic motion. It is effective because it allows us to abstract some essential data from the music: Which chords happen at what time. 
+Then, using a little bit of math, you re-use that same progression for each other key. 
+
+(Take Falala) => (Add three semitones) => (Get Lalala)
+
+And voila, we now have a _relationship_ between these two chrod progressions. 
