@@ -59,10 +59,8 @@ function init() {
   const parts = Notes.diatonicHarmony(ManualInput.pitches);
   console.log("generated parts", parts);
   const syns = parts.map((p, i) => {
-    const syn = createSyn();
-    console.log("created part with syn and parts", syn, p)
+    const syn = createSyn(i);
     const part = createPart(syn, p);
-    assign(syn, {name: 'syn' + i, displayName: "Synth " + i});
     return syn;
   });
 
@@ -76,93 +74,8 @@ function init() {
   document.querySelector("#play").addEventListener('click', start);
 }
 
-function createSyn() {
-  const synFilterFreq = 620;
-  const synFilter = new Tone.AutoFilter("1n", synFilterFreq, 2);
-  const syn = new Tone.Synth({
-    oscillator : {
-      type : "fatsquare"
-    }
-  });
-
-  return syn;
-}
-
-/** Create an abstract musical part (notes, rhythms) */
-function createPart(synth, pitches) {
-  const freqs = pitches.map((n) => Notes.degreeToMidi(n, 3)).map(Notes.midiToFrequency);
-  const events = freqs.map((f, i) => Notes.noteEvent(f, i, 4));
-  const part = new Tone.Part(function(time, note) {
-    console.log("Playing for synth ");
-    console.log(synth.name);
-    synth.triggerAttackRelease(note, "16n");
-  }, events);
-
-  assign(part, {
-    pitches,
-    events,
-    loop: true,
-    loopEnd: {"4n": events.length}
-  });
-
-  /** Replace previous Events with new Events. */
-  part.update = function updateOwnPart(pitches) {
-    part.removeAll()
-    // debugger;
-    const freqs = pitches.map((n) => Notes.degreeToMidi(n, 3)).map(Notes.midiToFrequency);
-    const events = freqs.map((f, i) => Notes.noteEvent(f, i, 4));
-    events.forEach((e) => part.add(...e));
-    // console.log("added the events, then part.events: ", part._events[0]);
-    // debugger;
-    assign(part, {pitches, events});
-  }
-
-  synth.part = part;
-  addPart(part);
-  return part;
-}
-
-/** Display an input to dictate note performance. 
-    It updates the assigned part onInput. */
-function ManualInput() {
-  ManualInput.assign = function(part) {
-    ManualInput.part = part;
-    updateManualPitches();
-    ManualInput.part.update(ManualInput.pitches);
-  }
-
-  if (!ManualInput.ref) {
-    const input = document.createElement('input');
-    ManualInput.pitches = Notes.scales.major;
-    input.value = ManualInput.pitches.toString();
-    input.addEventListener('input', updateManualPitches);
-    input.addEventListener('input', updatePartPattern);
-    ManualInput.ref = input;
-    document.body.appendChild(input);
-  }
-
-  function updateManualPitches() {
-    ManualInput.pitches = ManualInput.ref.value.split(/,|\s+/)
-      .filter(n => !!n)
-      .map(n => parseInt(n));
-  }
-
-  function updatePartPattern() {
-    ManualInput.part.update(ManualInput.pitches);
-  }
-
-  return ManualInput.ref;
-}
-
 /** Modify object properties in place. */
-function assign(target, fields = {}) {
+export function assign(target, fields = {}) {
   for (let k in fields)
     target[k] = fields[k];
-}
-
-/** Add a playable part to the global scope. */
-function addPart(part, ...parts) {
-  window.parts.push(part);
-  if (parts.length)
-    parts.forEach(p => window.parts.push(p));
 }
