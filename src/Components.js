@@ -1,32 +1,103 @@
 import Tone from 'tone';
+import * as Notes from './Notes.js';
+import * as Syn from './Syn.js';
 
 /** Display visual controls to control a synthesizer. */
 export function GUI(synths) {
   synths.forEach(s => {window[s.name] = s}); // for development
 
-  const children = synths.map(ControlPanel);
-  const gui = Panel(children);
+  const controlPanels = synths.map((synth) => {
+    const noteMeta = {
+      octave: synth.part.octave || 4,
+      duration: synth.duration || "16n"
+    };
+    return ControlPanel(synth, noteMeta)
+  });
+
+  const gui = Panel(controlPanels);
   gui.className = 'gui';
   return gui;
 }
 
 /** Display a set of controls for a target Synthesizer. */
-export function ControlPanel(syn) {
-  syn.panels = [
-    PitchInput(syn),
+export function ControlPanel(syn, noteMeta) {
+  const { part } = syn;
+  const { octave, duration } = noteMeta;
+
+  const panels = [
+    PatternInput(part, part.pattern),
+    OctavePanel(part),
+    PlaybackPanel(part),
+    DurationPanel(syn),
     VolumeFader(syn),
     EQPanel(syn)
   ];
 
-  const controls = Panel(syn.panels, syn.displayName);
-  controls.classList.add('control-panel');
-  return controls;
+  const controlPanel = Panel(panels, syn.displayName);
+  controlPanel.classList.add('control-panel');
+  return controlPanel;
 }
 
-export function PitchInput(syn) {
-  const input = syn.input;
-  input.classList.add('pitch-input');
+/** Display an input for controlling the notes of a Part. */
+export function PatternInput(part, defaultPattern = []) {
+  const input = document.createElement('input');
+  input.value = defaultPattern.length && defaultPattern.toString() || Notes.scales.major.toString();
+  input.addEventListener('input', (e) => {
+    Syn.updatePart(part, Notes.parseInput(e.target.value));
+  });
+
+  part.input = input;
   return input;
+}
+
+/** Display a panel for two octave buttons and metadata. */
+export function OctavePanel(part) {
+  const octMod = document.createElement('p');
+  octMod.textContent = part.octave;
+
+  function update(event) {
+    octMod.textContent = part.octave;
+  }
+  const label = document.createElement('label');
+  label.textContent = 'octave';
+  const octUp = OctaveButton(part, '+', update);
+  const octDown = OctaveButton(part, '-', update);
+  const panel = Panel([label, octDown, octMod,  octUp]);
+  panel.classList.add('octave-control');
+  return panel;
+}
+
+/** Display buttons to start and stop a synth's part. */
+export function PlaybackPanel(part) {
+  const stop = document.createElement('button');
+  const play = document.createElement('button');
+  stop.textContent = '||';
+  play.textContent = '|>';
+  stop.addEventListener('click', (event) => part.stop("@1n"));
+  play.addEventListener('click', (event) => part.start("@1n"));
+  const playbackPanel = Panel([stop, play], 'Playback');
+  playbackPanel.classList.add('playback-control');
+  return playbackPanel;
+} 
+
+function DurationPanel(part) {
+  const display = document.createElement('span');
+  display.classList.add('duration-display');
+  display.textContent = part.duration;
+
+  const augment = DurationButton(part, 'augment', (event) => {
+
+    display.textContent = part.duration;
+  });
+
+  const diminish = DurationButton(part, 'diminish', (event) => {
+
+    display.textContent = part.duration;
+  });
+
+
+  const panel = Panel([augment, diminish], 'Note Length');
+  return panel;
 }
 
 /** Create an EQ3 for `syn`, connect it, and display a panel. */
@@ -75,8 +146,63 @@ export function EQPanel(syn) {
   return container;
 }
 
+/** Display a fader to control synth volume. */
+export function VolumeFader(syn) {
+  const input = document.createElement('input');
+  const volume = {
+    name: 'Volume',
+    min: -36,
+    max: 24,
+    value: syn.volume.value,
+    step: 1
+  }
+
+  function onChange(event) {
+    syn.volume.value = event.target.value;
+  }
+
+  return Range(volume, onChange);
+}
+
+/** Display a button to augment or diminish the part duration. */
+function DurationButton(part, type = "2x", update) {
+  const button = document.createElement('button');
+  button.classList.add('duration-button');
+  button.textContent = type;
+  button.addEventListener('click', function changeOctave(event) {
+    if (type == '2x') {
+      let timePieces = Notes.timestampToList(part.duration);
+      part.update(part.pattern, part.octave + 1)
+    }
+    else {
+      part.update(part.pattern, part.octave - 1);
+    }
+
+    update();
+  });
+
+  return button;
+}
+
+/** Display a button to transpose a set of pitches by octave. */
+function OctaveButton(part, type = '+', update) {
+  const button = document.createElement('button');
+  button.classList.add('octave-button');
+  button.textContent = type;
+  button.addEventListener('click', function changeOctave(event) {
+    if (type == '+')
+      part.update(part.pattern, part.octave + 1)
+    else 
+      part.update(part.pattern, part.octave - 1);
+
+    update();
+  });
+
+  return button;
+}
+
 /** Display a panel of related controls. */
-export function Panel(children, displayName = '') {
+function Panel(children, displayName = '') {
   const panel = document.createElement('div');
   panel.className = 'panel';
 
@@ -94,7 +220,7 @@ export function Panel(children, displayName = '') {
 }
 
 /** Create an <input type="range" /> for arbitrary controls. */
-export function Range(values, onInput) {
+function Range(values, onInput) {
   const input = document.createElement('input');
   const defaults = {
     type: 'range',
@@ -118,25 +244,4 @@ export function Range(values, onInput) {
   group.appendChild(input);
   group.classList.add('control-group');
   return group;
-}
-
-/** Display a fader for the synthesizer's volume. */
-export function VolumeFader(syn) {
-  const input = document.createElement('input');
-  console.log("Volume for syn " + syn.name + " is " + syn.volume.value)
-  const volume = {
-    name: syn.displayName + ' Volume',
-    min: -36,
-    max: 24,
-    value: syn.volume.value,
-    step: 1
-  }
-
-  // Each synth already has a member #volume; use that rather than new Tone.Volume.
-  function onChange(event) {
-    syn.volume.value = event.target.value;
-    console.log("New volume for synth " + syn.name + " is " + event.target.value, syn.volume.value)
-  }
-
-  return Range(volume, onChange);
 }
