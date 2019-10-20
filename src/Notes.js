@@ -60,30 +60,51 @@ export function diatonicHarmony(pattern, scale = 'major', voices = 3) {
 
 /** Augment or diminish a time pattern by a constant scale. */
 export function scaleTime(timeList, scale = 2) {
-  return normalizeTimeList(timelist.map(t => t * scale));
+  console.log("Preparing scaled time : ", timeList.map(t => t * scale));
+  return normalizeTimeList(timeList.map(t => t * scale));
+}
+
+/** Transform a timeList to a usable Tone.js format. */
+export function timeListToString(timeList) {
+  return timeList.join(':');
 }
 
 function normalizeTimeList(timeList) {
+  console.log("normalizeTimeList.timeList", timeList);
   const limit = 4;
   let surplus = 0;
   const newList = timeList.reduce((newList, part, index, src) => {
-    if (part < 1) {
+    if (part % 1) { // A fractional value to be re-allocated to the next subdivision.
+      if (index == 2) {
+        // Fractions of one sixteenth are no good.  
+        newList.push(0);
+        return newList;
+      }
+      console.log("Less than 1")
+      console.log("current part", part)
+      console.log(src[index+1]);
+      console.log(1/part)
       src[index + 1] += 1/part;
       newList.push(0);
     }
 
     if (index > 0 && part > limit) {
       surplus = Math.floor(part / limit);
+      console.log("using part", part)
+      console.log("created surplus", surplus);
       newList[index - 1] += surplus;
       newList.push(part % limit);
     }
 
-    else { // It is a Bar qty larger than limit, which is fine.
+
+    else { // The Bar amount is larger than limit, which is fine.
       newList.push(part);
     }
 
     return newList;
   }, []);
+
+  console.log("NormalizeTimeList.newList: ", newList);
 
   // Only Bars may be greater than 4, and none should be less than 1.
   if (newList.find((el, i) => i > 0 && el > limit) || newList.find(el => el < 1))
