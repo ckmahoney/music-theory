@@ -37,20 +37,22 @@ And letters are just letters. We are only accustomed to naming notes with letter
 The immediate benefit is clear: 
 Every note now has its own unique, totally independent identifier. It is impossible to confuse "D" and "D#" because now we can call it 2 and 3, and know that they are indeed their own independent selves.
 
+Why do we start at 0 instead of 1? 
+It will make adding things together much easier later. Bear with me. 
+
 Let's agree on some terms. 
 
 A *Scale Degree* is one note within a specific scale. For example, the first scale degree of the above chromatic scale is 0. 
 
 The chromatic scale has 12 degrees. When speaking aloud, we'll refer to them by the name of the number. So the first degree is 0, the second degree is 1, the third degree is 2, and so on.
 
-Why do we start at 0 instead of 1? 
-It will make adding things together much easier later. Bear with me. 
+A *semitone* is a measurement of distance between two notes. On a standard piano keyboard or MIDI roll, two notes are a semitone apart if they are right next to one another. It is the basis of how we construct intervals and chords. Traditional music theory also describes the whole tone, but since that is only two semitones added together, we'll just stick with the semitone for consistency.  
 
-Western harmony has many, many incredible use cases. It establishes fantastic rules for composing and arranging music. My goal is to extend those rules, but make them more _modular_. 
+Western harmony has many, many incredible use cases. It establishes fantastic rules for composing and arranging music. My goal is to extend those rules and make them more _modular_. Using this approach we can find patterns we like and re-use them across different compositions.
 
-By using a numeric system to create music, we can much more easily identify patterns common across many pieces of music. 
+By using a numeric system to create music, we can more easily identify patterns common across pieces of music. 
 
-Consider this chord first progression for example:
+Consider this chord progression for example. Let's name it Lalala:
 
 Progression Falala
 ||: F - - - | C - - - | Bb - - - | F - C - :||
@@ -61,15 +63,20 @@ Progression Lalala
 ||: G# - - - | D# - - - | C# - - - | G# - D# - :||
 
 Are they the same? 
-No. And yes. They are. . . very similar. 
+No. And yes. They are. . . very similar, even though they don't look anything alike. 
 
 The only difference is which scale it starts on. Otherwise, the _relationships_ between all the chords are identical. Using Western notation, we can write _both_ progressions like this: 
 
 || I - - - | V - - - | IV - - - | I - V - :||
 
-For centuries music analysists have been using Roman numerals to describe harmonic motion. It is effective because it allows us to abstract some essential data from the music: Which chords happen at what time. 
-Then, using a little bit of math, you re-use that same progression for each other key. 
+For centuries music analysists have been using Roman numerals to describe harmonic motion. It is effective because it allows us to abstract some essential information from the music: Which chords happen at what time. When spoken aloud, they are pronounced the same as our Arabic numerals above, so it can be a little confusing sometimes when discussing scale degrees vs chord progressions. Context is key. 
+The progressions above use one of the most common tropes in pop music : the I - IV - V - I pattern. This is such a fundamental pattern in music that it has made its way into every genre, and you can find lists of songs that use this progression. 
 
-(Take Falala) => (Add three semitones) => (Get Lalala)
+There are other common progressions, too. There are many progresions. In fact, you can put together any set of chords and call it a progression! It just happens that some sound better than others, and others can be made to sound better when used in the right way ;)
 
-And voila, we now have a _relationship_ between these two chrod progressions. 
+Let's go back to our Falala and Lalala progressions. Using a little bit of math, we can find the relatinship between the two. 
+
+(Falala, +3 semitones) => Lalala
+Start with Falala and add three semitones, and you get Lalala.
+
+Voila, we now have a _relationship_ between these two chord progressions. 
