@@ -1,7 +1,7 @@
 'use strict';
 import Tone from 'tone';
 import * as Notes from './src/Notes.js';
-import * as Components from './src/Components.js';
+import { GUI } from './src/Components.js';
 import * as Syn from './src/Syn.js';
 
 init();
@@ -30,48 +30,22 @@ function init() {
     r: 0.5
   }
 
-  const leadFilterFreq = 420;
-  const leadFilter = new Tone.AutoFilter("1n", leadFilterFreq, 1);
-  const lead = new Tone.Synth({
-    oscillator : {
-      type : "fatsquare"
-    },
-    envelope : adsr
-  });
-
-  // const kickFilterFreq = 200;
-  // const kickFilter = new Tone.AutoFilter("4n", kickFilterFreq, 1);
-  // const kick = new Tone.FMSynth({
-  //   envelope: {
-  //     decay: 0.1,
-  //     sustain: 0.1,
-  //     release: 0.1
-  //   }
-  // });
 
   // const kickPart = new Tone.Part((t, n) => {
   //   kick.triggerAttackRelease(n, "8n", t);
   // }, [["0:0", "G1"],["0:1", "G1"], ["0:2", "G1"], ["0:3", "G#1"], ["0:3:2", "G1"]]);
-
-  // const leadPart = createPart(lead, ManualInput.pitches);
-  const parts = Notes.diatonicHarmony(Notes.scales.major);
-  const syns = parts.map((pitches, i) => {
-    const syn = Syn.Syn(i);
-    const part = Syn.Part(syn, pitches);
-    const input = Syn.PatternInput(part, pitches);
-    assign(syn, {part, input});
-    return syn;
-  });
-
-  // ManualInput.assign(leadPart);
-
-  assign(lead, {name: 'lead', displayName: 'Lead Synth'});
   // assign(kick, {name: 'kick', displayName: 'Kick'});
 
-  const gui = Components.GUI(syns);
+
+
+  const parts = Notes.diatonicHarmony(Notes.scales.major);
+  const syns = parts.map(Syn.createSynth);
+
+  const gui = GUI(syns);
   document.body.appendChild(gui);
   document.querySelector("#play").addEventListener('click', start);
 }
+
 
 /** Modify object properties in place. */
 export function assign(target, fields = {}) {
