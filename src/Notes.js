@@ -70,43 +70,38 @@ export function timeListToString(timeList) {
 }
 
 function normalizeTimeList(timeList) {
-  console.log("normalizeTimeList.timeList", timeList);
   const limit = 4;
-  let surplus = 0;
   const newList = timeList.reduce((newList, part, index, src) => {
-    if (part % 1) { // A fractional value to be re-allocated to the next subdivision.
+    // A fractional value to be re-allocated to the next subdivision.
+    if (part % 1) { 
+      console.log("index, part", index, part )
+      // Fractions of one sixteenth are not allowed; set the minimum sixteenth to 1.
       if (index == 2) {
-        // Fractions of one sixteenth are no good.  
-        newList.push(0);
-        return newList;
+        newList.push(1);
       }
-      console.log("Less than 1")
-      console.log("current part", part)
-      console.log(src[index+1]);
-      console.log(1/part)
-      src[index + 1] += 1/part;
-      newList.push(0);
+      else {
+        src[index + 1] += 1/part;
+        newList.push(0);
+      }
+
+      return newList;
     }
 
-    if (index > 0 && part > limit) {
-      surplus = Math.floor(part / limit);
-      console.log("using part", part)
-      console.log("created surplus", surplus);
-      newList[index - 1] += surplus;
+    // Allocate superfluous beat quantity to the proper unit of time.
+    if (index > 0 && part >= limit) {
+      newList[index - 1] += Math.floor(part / limit);
       newList.push(part % limit);
     }
 
-
-    else { // The Bar amount is larger than limit, which is fine.
+    // The Bar quantity is larger than limit, which is fine.
+    else {   
       newList.push(part);
     }
 
     return newList;
   }, []);
 
-  console.log("NormalizeTimeList.newList: ", newList);
-
-  // Only Bars may be greater than 4, and none should be less than 1.
+  // Only Bars may be greater than 4, and no units should be less than 1.
   if (newList.find((el, i) => i > 0 && el > limit) || newList.find(el => el < 1))
     return normalizeTimeList(newList);
 
