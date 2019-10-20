@@ -1,11 +1,14 @@
+import Tone from 'tone';
+import * as Notes from './Notes.js';
 import { assign } from '../ply.js';
 
+/** Personal modifications to the default sounds provided by Tone.js. */
 const presets = [
     { name: 'Synth',
       volume: 6
     },
     { name: 'MonoSynth',
-      volume: -18 
+      volume: -18 // MonoSynth is really loud by default. Turn it down.
     },
     { name: 'AMSynth',
       volume: 12 
@@ -18,7 +21,8 @@ const presets = [
     }
   ];
 
-export function createSyn(voice = 0) {
+/** Create a default synthesizer. When used in a loop, uses different preset per voice. */
+export function Syn(voice = 0) {
   const preset = presets[voice];
   const syn = new Tone[preset.name]({preset});
   syn.volume.value= preset.volume;
@@ -33,7 +37,7 @@ export function createSyn(voice = 0) {
 }
 
 /** Create an abstract musical part (notes, rhythms) */
-export function createPart(synth, pitches) {
+export function Part(synth, pitches) {
   const freqs = pitches.map((n) => Notes.degreeToMidi(n, 3)).map(Notes.midiToFrequency);
   const events = freqs.map((f, i) => Notes.noteEvent(f, i, 4));
   const part = new Tone.Part(function(time, note) {
@@ -61,9 +65,34 @@ export function createPart(synth, pitches) {
   return part;
 }
 
+export function PatternInput(part, defaultPattern = []) {
+  console.log("Received default pattern", defaultPattern)
+  const input = document.createElement('input');
+  input.value = defaultPattern.length && defaultPattern.toString() || Notes.scales.major.toString();
+  input.addEventListener('input', (e) => {
+    updatePartPattern(part, parseInput(e.target.value))
+  });
+
+  // localize the pitches as an array for easier reference.
+  // PatternInput.pitches = pitches.length && pitches || Notes.scales.major; // default value
+  PatternInput.ref = input;
+  return input;
+}
+
+/** Take a CSV of scale degrees and return an array of degrees. */
+function parseInput(pitchString) {
+  return pitchString.split(/,|\s+/)
+    .map(n => n.length ? parseInt(n) : n); // allow empty strings for empty beats.
+}
+
+/** Reset the parts content to a new Pitch array. */
+export function updatePartPattern(part, pitches) {
+  part.update(pitches);
+}
+
 /** Display an input to dictate note performance. 
     It updates the assigned part onInput. */
-function ManualInput() {
+function _ManualInput() {
   ManualInput.assign = function(part) {
     ManualInput.part = part;
     updateManualPitches();
