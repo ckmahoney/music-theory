@@ -1,0 +1,21 @@
+Okay so now we see why numbers are awesome. Yeah!
+
+Let's observe two more properties about the relationship between IV, V, and I.
+
+Because both IV and V are of the major type, we know that their chord structure is identical. 
+And because we know that the IV chord starts on the 5th semitone, and the V chord starts on the 7th semitone, it is reasonable to assert that we can generate a V chord simply by moving our hand up 2 semitones. 
+Wowza, that's neat! Such hack, mind blown.
+
+And what if we had a cheat sheet to get to our IV chord as well? Well we do and it goes like this. Let's observe a Major Scale again: 
+0 2 4 5 7 9 11 
+
+And now compare all of the notes of all of the chords at once:
+I  : [0, 4, 7]
+IV : [5, 9, 0]
+V  : [7, 11, 2]
+
+This one is a bit of a stretch, but look at the middle note of the I chord and the root note of the IV chord. We end up seeing that they are only one semitone apart, moving from a 4 to a 5.
+When playing on an instrument this can help you quickly find the root note of the IV chord instead of counting up semitones from the root. Instead of counting, take a look at the middle note of your I chord and know that the next semitone is the root of the IV chord.
+Then use the same structure two semitones up to create a V chord.
+
+And there you have it, the I - IV - V in your hands. 

@@ -1,0 +1,96 @@
+The major scale is a wonderful place to start because it has been the foundation of our music since the 15th century. It is not the de-facto scale of all time, and there are other considerable options that make more sense when you consider the physics of acoustics. 
+
+Since we are most interested in composing music that sounds good to our ears, it is a fine place to start.
+
+We can construct a major scale using the following set of scale degrees:
+
+Major Scale
+0 2 4 5 7 9 11 
+
+Here are some properties of this scale:
+ - The distance between each scale degree is not always the same. 
+ - The smallest distance is 1 semitone.
+ - The largest distance is 2 semitones.
+ - It has a total of 7 unique notes. 
+ - It spans the largest possible interval (0 - 11) before reaching an octave.
+
+To play this scale on a keyboard, we can approach it in two ways:
+
+Realtive to the Root
+Looking at a scale this way, we are comparing each note relative to the starting point (the root, e.g. 0).
+	Start on any key. 
+	The next degree is 2 semitones from the root. 
+	The next degree is 4 semitones from the root.
+	The next degree is 5 semitones from the root.
+	. . . 
+	The final degree is 11 semitones from the root.
+
+Relative to each degree
+Playing a scale this way is when we consider the number of semitones _between_ notes. 
+  Start on any key.
+  The next degree is 2 semitones up: 2 - 0 = 2
+  The next degree is 2 semitones up: 4 - 2 = 2
+  The next degree is 1 semitone up : 5 - 4 = 1
+  . . . 
+
+Both are very useful, and I think you will end up using either approach when practicing and studying scales. 
+The first way is excellent for hearing different intervals relative to an origin. 
+The second way is great for shaping melodies.
+
+And here's where numbers reaveal how fantastic they are. By learning this one pattern, you have already learned 12 major scales! One major scale for each of the unique notes on our keyboard.
+Go ahead and try playing the scale again but starting on a different key. You don't even have to know the letter names of these notes! Eventually those would be good to learn so you can more easiliy communicate with other musicians.
+For now though, I'd like you just to be comfortable with the sound of a major scale. Soon enough you will be able to hear a scale and recognize it as "major" or "minor" or "diminished" or "chromatic" or "pentatonic" or. . . 
+
+It will sound different only because the starting point is different. However, the _relationships_ between notes are all exactly the same. 
+
+Alright, so what else can we do with this thing? The scale is nice and all, but soon enough it gets boring.
+
+It is also the source of the chord progressions we saw previously. Let's take another look at the progresion Falala: 
+
+||: I - - - | V - - - | IV - - - | I - V - :||
+
+Here we are using the Roman numberals instead of letter names because the numerals aren't tied to any particular key. So the I will work regardless of if you start on a white key or black key; on the G string or the D string; with this valve or that. As long as we continue to measure everything in semitones, we can continue to move the chord and progression around to any root we like.
+
+Let's talk about what a I chord is. 
+
+These are all capital Roman numerals. That indicates that the *quality* of the chord is major. A chord's quality describes both its sound and structure. All three of the chords in this pattern are capital, so we know they are all of the major type.
+
+How do we make a major chord? With numbers!!!
+
+Looking at our Major Scale pattern, we want to target the first, third, and fifth scale degrees. That means: 
+0, 4, 7
+
+To say it explicitly, there are again two ways to think of it:
+
+We start at a root note 0.
+Then find the note 4 semitones from the root note.
+And we find the note 7 semitones from the root note.
+
+OR 
+
+We start at a root note 0.
+Then we move up 4 semitones (4 - 0) from the previous note.
+Then we move up 3 semitones (7 - 4) from the previous note.
+
+That's it! This is the recipe for creating major chords. Try it out, it's pretty yummy.
+
+Finally, let's find out where the IV and V chords come from. We can already tell that they are all major, so they will use the same [0, 4, 7] pattern.
+The difference is _where_ these notes start. Because they aren't all off floating randomly in sound space, we need to establish a new term for these relationships: The *fundamental*. 
+
+The *fundamental* is what we call the origin of the progression. It is home. It is the note & chord combo that always sounds correct, and is likely to start and end the piece. The root note 0 of your I chord is the fundamental.
+From the fundamental, we then find the IV chord by first going to the fourth scale degree. Looking at our major scale pattern we can see that this is 5 semitones from our root.
+
+Now for just a brief moment, let's pretend that this new note is our root but keep the old Fundamental in place. Using the same Major Chord structure above, we can create a Major Chord starting on this note. 
+And finally we'll do the same again for the V chord. Start at the root, then count 7 semitones up, and generate a new Major Chord from using the same structure. 
+
+You'll notice that there aren't a lot of shared keys between all three of these chords. The IV chord shares one note with the I chord, and the V chord also shares one note with the I chord, and the IV and V chords have no shared notes with each other.
+Then where do these chords come from, and why do they sound so darn good?
+
+The Fundamental is a rich source of harmonic content. When any note is is played, it produces a set of overtones. Which overtones you hear help determine the way that instrument sounds: it's one of the reasons a cello sounds different than a flute. 
+Let's consider an upright bass player playing their D string. What's actually happening is D is providing the Fundamental for many more partials above it: 1st partial D, then the second partial D an octave higher; the third partial an A, fourth partial D, then F#, A, C, D, E, F#, G, A.
+
+Let's respell that using numbers instead so we can understand it better. The same series looks like this for any Fundamental: 
+0, 0, 7, 0, 4, 7, 10, 0, 2, 4, 5, 7
+
+The higher we go in the harmonic series the less audible the notes become. Notice that in the first four partials we see the Fundamental 3 times. The second most popular note is the 7, the top note in a Major Chord and root of the V chord, and the third most fequent is 4, the middle of our Major Chord. This all comes together instantly in our ears to establish a fundamental sound and set of expectations that go with it. And because every note produces resonates this same pattern, we get progressions like I - IV - V as a result. It's all natural. 
+

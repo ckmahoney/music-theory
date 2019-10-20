@@ -1,0 +1,121 @@
+One beautiful aspect of composition is how many opportunites exist to create whatever sound pleases you. Producers and composers may end up using every type of chord a little bit, and some find themselves favoring certain patterns more than others. Personally I find the minor chord patterns to be more attractive, and let these be the basis for my own work. Since we've spent so much time already talking about the Major chords, we should also give the same consideration to Minor chords as well. 
+
+First let's see how they are constructed, then see how they fit in to a Major Scale, and finally we can construct a Minor Scale as well (which is only a variation of the Major Scale).
+
+Like Major Chords, there are two ways to construct minor chords. In fact, these two methods of structuring chords works no matter the type or quality of chord. What matters most is the interval between notes. An *interval* is a number of semitones betwen two notes. 
+
+The pattern for a Minor Chord is [0, 3, 7].
+
+
+We start at a root note 0.
+Then find the note 3 semitones from the root note.
+And we find the note 7 semitones from the root note.
+
+OR 
+
+We start at a root note 0.
+Then we move up 3 semitones (3 - 0) from the previous note.
+Then we move up 4 semitones (7 - 3) from the previous note.
+
+Here's an interesting thing: The Major and Minor chords are barely different! It's only the middle note that changes, and that is only one semitone of a difference. Yet the difference is profound both in sound and functional harmony.
+
+Where does it come from? Let's look at our major scale again, and this time try a new way of constructing chords. Instead of already knowing the structures [0, 4, 7] and [0, 3, 7], let's instead see what happens if we stack notes on top of each other that are two degrees away from one another. 
+
+This means we can turn this:
+0 2 4 5 7 9 11 
+
+Into this: 
+[0, 4, 7]
+[2, 5, 9]
+[4, 7, 11]
+[5, 9, 0]
+[7, 11, 2]
+[9, 0, 4]
+[11, 2, 5]
+
+```
+When we run out of notes after the 11th degree, simply return back to the start of the scale and use the 1st degree, 0. A scale can keep going up in pitch infinitely. For theory, we just go back to the start of the list we already have. And when subtracting notes from each other, if one of them is an 11 or 0 you can add 12 to the other one if necessary. For example in 
+
+[7, 11, 2] 
+2 - 11 => -9 
+Which is not useful for us. So instead we can call it
+(12 + 2) - 11 => 14 - 11 => 3
+
+We choose the number 12 because that would be the next semitone after 11, but instead we loop back to 0. 
+
+Or if you aren't afraid of adding postive values to negative numbers, the shortcut is to just add 12 when the original number is negative, like this:
+
+2 - 11 => (-9 + 12) => 3
+
+Same difference, if you know what I mean ;)
+```
+
+If you read it left to right it looks like a bunch of sets of three. 
+If you look at it top to bottom, we see three columns of numbers: The leftmost column is the major scale, and the next two columns are the same scale but offset by 2 and 4 degrees. This makes sense because we used the same pattern to create all of these chords: Start with a degree, add the note two degrees away, and add a note four degrees away. 
+
+At some point in history somebody did the math and noticed some patterns. When you look at the difference in semitones between the notes, you see the first chord is (4, 3) and the second chord (3, 4) and the third chord (3, 4) and the fourth chord (4, 3) and the fifth chord (4, 3) and the sixth chord (3, 4). And we also notice that these are the same differences we use when constructing Major and Minor chords.
+
+Major Chord: [0, 4, 7]
+4 - 0 => 3
+7 - 4 => 4
+
+Minor Chord: [0, 3, 7]
+3 - 0 => 3
+7 - 3 => 4
+
+So using capital Roman numerals for a Major Chord and lowercase Roman numerals for a Minor Chord, and then naming each of the chords above ^^ based on its type, we get
+
+I 	[0, 4, 7]
+ii 	[2, 5, 9]
+iii [4, 7, 11]
+IV 	[5, 9, 0]
+V 	[7, 11, 2]
+vi 	[9, 0, 4]
+
+vii*[11, 2, 5]
+
+Hey why is vii* all alone at the bottom? It's a bit different. The interval between the notes for both cases is 3:
+
+11 - 2 => -9 + 12 => 3
+and
+5 - 2 => 3
+
+This is neither Major nor Minor because it's missing an interval of 4 semitones: It is instead a set of two intervals of 3 semitones.
+This is called a Diminished Chord. More on that later. 
+
+Finally, let's see how this all relates back to the Major Scale we found earlier. The notation here places Major chords above the notes and Minor chords below the notes and the Diminished chord on its on row, but that's only to make it easier to visualize. There isn't an "above" or "below" actually in the relationships of these chords.
+
+I        IV V  
+0  2  4  5  7  9  11
+   ii iii     vi 
+                 vii*
+
+
+Oooh la la, now we can count all the way to 7 with _meaning_. 
+
+Where does the Minor Scale come in though? Right here.
+
+0 2 3 5 7 8 10
+
+Finally we get some use out of the other scale degrees! There are a few things different about this and the Major Scale. let's do a side-by-side comparison.
+
+
+Major: 0 2 4 5 7 9 11
+Minor: 0 2 3 5 7 8 10
+
+The degrees that remain constant are the first, second, fourth, and fith. 
+The third, sixth, and seventh degrees change. The difference is all three of the degreese have been reduced by one semitone. 
+
+Try playing this scale on your instrument, see how it sounds. How does it compare to the Major Scale in terms of mood or color, in your opinion? Does it remind you of anything? 
+
+This is where we can start to consider how music plays on memory, feeling, and emotion. If every song only ever used the three Major Chords we've been talking about, there would be virtually no distinction in song or composition aside from the instrumentation and arrangement of parts. When we include a more diverese set of chords and intervals, we start to expose more interesting charcteristic of the sound.
+
+Where does the Minor Scale come from though? It is loosely based on the harmonic series as well, but only because the Minor Scale is derived from the Major Scale. Specifically, given a Major Scale, find the sixth scale degree. Then using _the same notes of that Major Scale_, play from sixth degree to the next sixth degree. Like this: 
+
+9 11 0 2 4 5 7 (9)
+
+Our root of the Major Scale is now the third degree of this new scale. This new scale, which uses the exact same notes as the Major Scale but starts in a different location, is our Minor Scale. If we subtract 9 from each of those notes (and add 12 when negative) we find the pattern
+
+0 2 3 5 7 8 10
+
+Which is how we define our Minor Scale. 
