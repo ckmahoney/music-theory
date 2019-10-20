@@ -21,13 +21,12 @@ export function GUI(synths) {
 
 /** Display a set of controls for a target Synthesizer. */
 export function ControlPanel(syn, noteMeta) {
-  const { part } = syn;
   const { octave, duration } = noteMeta;
 
   const panels = [
-    PatternInput(part, part.pattern),
-    OctavePanel(part),
-    PlaybackPanel(part),
+    PatternInput(syn, syn.part.pattern),
+    OctavePanel(syn),
+    PlaybackPanel(syn),
     DurationPanel(syn),
     VolumeFader(syn),
     EQPanel(syn)
@@ -39,7 +38,8 @@ export function ControlPanel(syn, noteMeta) {
 }
 
 /** Display an input for controlling the notes of a Part. */
-export function PatternInput(part, defaultPattern = []) {
+export function PatternInput(syn, defaultPattern = []) {
+  const part = syn.part;
   const input = document.createElement('input');
   input.value = defaultPattern.length && defaultPattern.toString() || Notes.scales.major.toString();
   input.addEventListener('input', (e) => {
@@ -51,7 +51,8 @@ export function PatternInput(part, defaultPattern = []) {
 }
 
 /** Display a panel for two octave buttons and metadata. */
-export function OctavePanel(part) {
+export function OctavePanel(syn) {
+  const part = syn.part;
   const octMod = document.createElement('p');
   octMod.textContent = part.octave;
 
@@ -68,7 +69,8 @@ export function OctavePanel(part) {
 }
 
 /** Display buttons to start and stop a synth's part. */
-export function PlaybackPanel(part) {
+export function PlaybackPanel(syn) {
+  const part = syn.part;
   const stop = document.createElement('button');
   const play = document.createElement('button');
   stop.textContent = '||';
@@ -80,23 +82,19 @@ export function PlaybackPanel(part) {
   return playbackPanel;
 } 
 
-function DurationPanel(part) {
+function DurationPanel(syn) {
   const display = document.createElement('span');
   display.classList.add('duration-display');
-  display.textContent = part.duration;
+  display.textContent = syn.part.duration;
+  
+  const update = (event) => {
+    console.log("syn", syn);
+    display.textContent = syn.part.duration;
+  }
+  const augment = DurationButton(syn, 'augment', update);
+  const diminish = DurationButton(syn, 'diminish', update);
 
-  const augment = DurationButton(part, 'augment', (event) => {
-
-    display.textContent = part.duration;
-  });
-
-  const diminish = DurationButton(part, 'diminish', (event) => {
-
-    display.textContent = part.duration;
-  });
-
-
-  const panel = Panel([augment, diminish], 'Note Length');
+  const panel = Panel([display, augment, diminish], 'Note Length');
   return panel;
 }
 
@@ -165,19 +163,26 @@ export function VolumeFader(syn) {
 }
 
 /** Display a button to augment or diminish the part duration. */
-function DurationButton(part, type = "2x", update) {
+function DurationButton(syn, type = "augment", update) {
+  // console.log('part', part)
+  //   console.log("part duration: " , part.duration);
   const button = document.createElement('button');
   button.classList.add('duration-button');
   button.textContent = type;
-  button.addEventListener('click', function changeOctave(event) {
-    if (type == '2x') {
-      let timePieces = Notes.timestampToList(part.duration);
-      part.update(part.pattern, part.octave + 1)
-    }
-    else {
-      part.update(part.pattern, part.octave - 1);
-    }
+  button.addEventListener('click', function changeDuration(event) {
+    const part = syn.part;
+    console.log('part', part)
+    console.log("part duration: " , part.duration);
 
+    let timePieces = Notes.timestampToList(part.duration);
+    let newTime;
+
+    if (type == 'augment') 
+      newTime = Notes.scaleTime(timePieces, 2);
+    else 
+      newTime = Notes.scaleTime(timePieces, .5);
+
+    Syn.updatePart(part, part.pattern, part.octave, Notes.timeListToString(newTime));
     update();
   });
 
@@ -191,9 +196,9 @@ function OctaveButton(part, type = '+', update) {
   button.textContent = type;
   button.addEventListener('click', function changeOctave(event) {
     if (type == '+')
-      part.update(part.pattern, part.octave + 1)
+      Syn.updatePart(part, part.pattern, part.octave + 1)
     else 
-      part.update(part.pattern, part.octave - 1);
+      Syn.updatePart(part, part.pattern, part.octave - 1);
 
     update();
   });
