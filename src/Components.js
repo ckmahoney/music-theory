@@ -2,9 +2,9 @@ import Tone from 'tone';
 
 /** Display visual controls to control a synthesizer. */
 export function GUI(synths) {
-  const children = synths.map(ControlPanel);
   synths.forEach(s => {window[s.name] = s}); // for development
-  
+
+  const children = synths.map(ControlPanel);
   const gui = Panel(children);
   gui.className = 'gui';
   return gui;
@@ -13,6 +13,7 @@ export function GUI(synths) {
 /** Display a set of controls for a target Synthesizer. */
 export function ControlPanel(syn) {
   syn.panels = [
+    PitchInput(syn),
     VolumeFader(syn),
     EQPanel(syn)
   ];
@@ -20,6 +21,12 @@ export function ControlPanel(syn) {
   const controls = Panel(syn.panels, syn.displayName);
   controls.classList.add('control-panel');
   return controls;
+}
+
+export function PitchInput(syn) {
+  const input = syn.input;
+  input.classList.add('pitch-input');
+  return input;
 }
 
 /** Create an EQ3 for `syn`, connect it, and display a panel. */
