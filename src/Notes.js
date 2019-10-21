@@ -39,6 +39,10 @@ export function getPitchedScale(mode = ['d', 'minor'], octave = 4) {
       location -= notes.length;
       mod++;
     }
+    if (location < 0) {
+      mod--;
+      location += notes.length;
+    }
     const note = notes[location];
     return note.toUpperCase() + (octave + mod);
   })
@@ -56,8 +60,18 @@ export function degreeToPitches(pattern, mode = ['d', 'minor'], octave = 4) {
   const fundamental = notes.findIndex((root) => root == key.toLowerCase());
   const target = scales[scale];
   return pattern.reduce((pitches, degree, index) => {
-    const note = notes[(fundamental + degree) % notes.length];
-    pitches.push(note.toUpperCase() + octave);
+    let location = fundamental + degree;
+    let mod = 0;
+    if (location >= notes.length) {
+      location -= notes.length;
+      mod++;
+    }
+    if (location < 0) {
+      mod--;
+      location += notes.length;
+    }
+    const note = notes[location];
+    pitches.push(note.toUpperCase() + (octave + mod));
     return pitches;
   }, [])
 }
