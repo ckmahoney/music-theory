@@ -30,20 +30,23 @@ function init() {
     r: 0.5
   }
 
-
-  // const kickPart = new Tone.Part((t, n) => {
-  //   kick.triggerAttackRelease(n, "8n", t);
-  // }, [["0:0", "G1"],["0:1", "G1"], ["0:2", "G1"], ["0:3", "G#1"], ["0:3:2", "G1"]]);
-  // assign(kick, {name: 'kick', displayName: 'Kick'});
-
-
-
   const parts = Notes.diatonicHarmony(Notes.scales.major);
   const syns = parts.map(Syn.createSynth);
 
-  const gui = GUI(syns);
-  document.body.appendChild(gui);
-  document.querySelector("#play").addEventListener('click', start);
+  const btn = document.createElement('button');
+  btn.textContent = "Show DAW";
+  btn.addEventListener('click', () => {
+    const gui = GUI(syns);
+    document.body.appendChild(gui);
+    const play = document.createElement('button');
+    play.textContent = 'play/pause';
+    play.addEventListener('click', start);
+    document.body.appendChild(play);
+    console.log("buton l45")
+    btn.remove();
+  });
+
+  document.body.appendChild(btn); 
 }
 
 
